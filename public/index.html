@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/dni" method="get">
+        <label for="dni">DNI :</label>
+        <input id="dni" type="text" name="dni" pattern="[0-9]{8}[A-Za-z]{1}">
+        <button id="btn">Comprobar</button>
+    <p id="respuesta"></p>
+    </form>
+    <script>
+        document.getElementById("btn").addEventListener("click", validar);
+
+        function validar(evt){
+            evt.preventDefault();
+            fetch('/dni', {
+                    method: 'POST',
+                    body: JSON.stringify({"dni": document.getElementById("dni").value}),
+                    headers: {
+                        'Content-type': 'application/json; charset=UTF-8',
+                    },
+                })
+                        .then((response) => response.json())
+                        .then((json) => document.getElementById("respuesta").innerHTML = json.msg);
+        }
+
+        function getAbsolutePath() {
+                var loc = window.location;
+                var pathName = loc.pathname.substring(0, loc.pathname.lastIndexOf('/') + 1);
+                return loc.href.substring(0, loc.href.length - ((loc.pathname + loc.search + loc.hash).length - pathName.length));
+            }
+    </script>
+</body>
+</html>
