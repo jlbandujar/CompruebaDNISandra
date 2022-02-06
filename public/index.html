@@ -9,24 +9,32 @@
 <body>
     <form action="/dni" method="get">
         <label for="dni">DNI :</label>
-        <input id="dni" type="text" name="dni" pattern="[0-9]{8}[A-Za-z]{1}">
+        <input id="dni" type="text" name="dni" pattern="[0-9]{8}[A-Za-z]{1}"><p id="respuesta"></p>
         <button id="btn">Comprobar</button>
-    <p id="respuesta"></p>
+    
     </form>
     <script>
         document.getElementById("btn").addEventListener("click", validar);
 
         function validar(evt){
             evt.preventDefault();
-            fetch('/dni', {
+            let msg = document.getElementById("respuesta");
+            let dni = document.getElementById("dni").value;
+            let expresion_regular_dni = /^\d{8}[a-zA-Z]$/;
+            if(expresion_regular_dni.test (dni) == true){
+                fetch('/dni', {
                     method: 'POST',
-                    body: JSON.stringify({"dni": document.getElementById("dni").value}),
+                    body: JSON.stringify({"dni": dni}),
                     headers: {
                         'Content-type': 'application/json; charset=UTF-8',
                     },
                 })
                         .then((response) => response.json())
                         .then((json) => document.getElementById("respuesta").innerHTML = json.msg);
+            } else {
+                msg.innerHTML = "Debe introducir un formato valido";
+            }
+            
         }
     </script>
 </body>
