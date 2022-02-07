@@ -8,16 +8,21 @@ app.post('/dni', function (req, res) {
    //num, id... segun como se lo vayamos a pasar
    let dni = req.body.dni;
    console.log(dni);
-   let expresion_regular_dni = /^\d{8}[a-zA-Z]$/;
+   let expresion_regular_dni = /(^([0-9]{8,8}\-[A-Z]))$/;
    let respuesta;
    if (expresion_regular_dni.test(dni) == true) {
-      numero = dni.substr(0, dni.length - 1);
+      numero = dni.substr(0, dni.length-2); //aqui te lo cambio Sandra
       letr = dni.substr(dni.length - 1, 1);
-      numero = numero % 23;
-      letra = 'TRWAGMYFPDXBNJZSQVHLCKET';
-      letra = letra.substring(numero, numero + 1);
+      console.log("Numero Introducido",numero)
+      console.log("Letra introducida",letr)
+      i = numero % 23;
+      console.log("Indice: ",i)
+      letras = 'TRWAGMYFPDXBNJZSQVHLCKET';
+      letra = letras.substring(i, i+1); //cambio
+      console.log("Letra que toca: ",letra)
+      //letra= letra[i];
       if (letra != letr.toUpperCase()) {
-         respuesta = { msg: "La letra no corresponde" };
+         respuesta = { msg: "La letra no corresponde. debería ser " + letra };
       } else {
          respuesta = { msg: "DNI valido" };
       }
@@ -28,6 +33,6 @@ app.post('/dni', function (req, res) {
    res.json(respuesta);
 });
 
-port = 3000;
+port = 81;
 
 app.listen(port, () => console.log("Escuchando por el puerto " + port));

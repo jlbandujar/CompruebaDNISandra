@@ -20,7 +20,9 @@
             evt.preventDefault();
             let msg = document.getElementById("respuesta");
             let dni = document.getElementById("dni").value;
-            let expresion_regular_dni = /^\d{8}[a-zA-Z]$/;
+            //let expresion_regular_dni = /^\d{8}[a-zA-Z]$/;
+            
+            let expresion_regular_dni =/(^([0-9]{8,8}\-[A-Z]))$/
             if(expresion_regular_dni.test (dni) == true){
                 fetch('/dni', {
                     method: 'POST',
@@ -32,7 +34,7 @@
                         .then((response) => response.json())
                         .then((json) => document.getElementById("respuesta").innerHTML = json.msg);
             } else {
-                msg.innerHTML = "Debe introducir un formato valido";
+                msg.innerHTML = "Debe introducir un formato MUY valido";
             }
             
         }
